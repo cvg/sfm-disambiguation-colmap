@@ -1,12 +1,14 @@
-# Disambiguation with COLMAP
+# SfM disambiguation with COLMAP
 
 ## About
 
-This repository aims at making SfM systems robust to symmetries and duplicated structures in the scene by filtering out wrong matches between images. The filtering process is done by reimplementing the ideas from [Distinguishing the indistinguishable: Exploring structural ambiguities via geodesic context](https://yanqingan.github.io/docs/cvpr17_distinguishing.pdf) by Yan et al. and [Global Structure-from-Motion by Similarity Averaging](https://openaccess.thecvf.com/content_iccv_2015/papers/Cui_Global_Structure-From-Motion_by_ICCV_2015_paper.pdf) by Cui et al. We also include the experiment results from [Improving Structure from Motion with Reliable Resectioning](https://rajbirkataria.com/assets/ImprovingStructurefromMotionwithReliableResectioning.pdf) by Kataria et al based on [their implementation](https://github.com/rajkataria/ReliableResectioning). We refer to these three papers as Yan's method, Cui's method, and Kataria's method respectively.
+Structure-from-Motion generally fails when the scene exhibits symmetries and duplicated structures. In this repository, we implement several state-of-the-art algorithms that aim at addressing this problem, we integrate them into [COLMAP](https://colmap.github.io/), and we extensively analyze their performance. We hope that this effort can ease further research on this problem.
 
-This repository uses [colmap](https://github.com/colmap/colmap) and [hloc](https://github.com/cvg/Hierarchical-Localization) for feature extraction and matching, and [colmap](https://github.com/colmap/colmap) for geometric verification and sparse reconstruction.
+We focus on filtering out incorrect matches between images prior to SfM. The filtering process is done by reimplementing the ideas from [Distinguishing the indistinguishable: Exploring structural ambiguities via geodesic context](https://yanqingan.github.io/docs/cvpr17_distinguishing.pdf) by Yan et al. (CVPR 2017) and [Global Structure-from-Motion by Similarity Averaging](https://openaccess.thecvf.com/content_iccv_2015/papers/Cui_Global_Structure-From-Motion_by_ICCV_2015_paper.pdf) by Cui et al. (ICCV 2015). We also include the experiment results from [Improving Structure from Motion with Reliable Resectioning](https://rajbirkataria.com/assets/ImprovingStructurefromMotionwithReliableResectioning.pdf) by Kataria et al. (3DV 2020) based on [their implementation](https://github.com/rajkataria/ReliableResectioning). We refer to these three papers as Yan's method, Cui's method, and Kataria's method respectively. This repository uses [COLMAP](https://github.com/colmap/colmap) and [hloc](https://github.com/cvg/Hierarchical-Localization) for feature extraction and matching, and [COLMAP](https://github.com/colmap/colmap) for geometric verification and sparse reconstruction.
 
-Drop me an [email](mailto:lixxue@ethz.ch) if you are interested in this problem and want to discuss something!
+**TLDR: No method consistently works well over all datasets with a single set of hyperparameters. Tuning the parameters for large scenes is difficult and time-consuming for all three methods.**
+
+Drop an email to [Lixin Xue](mailto:lixxue@ethz.ch) if you are interested in this problem and want to chat!
 
 <p align="center">
     <img src="visualizations/alex_all.gif" alt="teaser">
@@ -19,7 +21,7 @@ Based on our experiments, we have the following observations:
 
 - Duplicate structures in images often lead to an excessive number of image matches and non-converging bundle adjustment. These will lengthen the reconstruction time significantly. Removing the wrong matches or initializing the poses correctly can significantly speed up the reconstruction process.
 - With a correct initial pair of images and a perfect next view selection, `colmap` might still output a reconstruction with many wrongly registered images. Even Kataria's method to initialize poses based on reliable matches was still insufficient to disambiguate some datasets. Therefore, a less noisy pose graph is necessary for a correct reconstruction.
-- Both Yan's method and Cui's method need some scene-specific parameter tuning. Kataria's method has better generalization ability, though still fails on several datasets even though we tune the parameters for it. For now, no method consistently works well with a single set of parameters. Tuning the parameters for certain scenes (especially large scale ones) can be difficult for all three methods.
+- Both Yan's method and Cui's method need some scene-specific parameter tuning. Kataria's method has better generalization ability, though still fails on several datasets even though we tune the parameters for it. **No method consistently works well over all datasets with a single set of parameters. Tuning the parameters for certain scenes (especially large scale ones) is difficult and time-consuming for all three methods.**
 
 ## Installation
 
@@ -545,4 +547,4 @@ Here are some relevant papers and their summaries:
 
 ## Acknowledgement
 
-This work is done under the supervision of [Paul‑Edouard Sarlin](https://psarlin.com/) and [Mihai Dusmanu](https://dsmn.ml/). We would like to thank [Qingan Yan](https://yanqingan.github.io/) for sharing the [original implementation and datasets](https://github.com/yanqingan/SfM_Disambiguation) and [Jared Heinly](https://www.cs.unc.edu/~jheinly/) for sharing the [datasets](https://www.cs.unc.edu/~jheinly/duplicate_structure.html).
+This work was done by [Lixin Xue](https://lxxue.github.io/), a Master's student at ETH Zurich, under the supervision of [Paul‑Edouard Sarlin](https://psarlin.com/) and [Mihai Dusmanu](https://dsmn.ml/). We would like to thank [Qingan Yan](https://yanqingan.github.io/) for sharing the [original implementation and datasets](https://github.com/yanqingan/SfM_Disambiguation), [Jared Heinly](https://www.cs.unc.edu/~jheinly/) for sharing the [datasets](https://www.cs.unc.edu/~jheinly/duplicate_structure.html), and [Rajbir Kataria](https://rajbirkataria.com/about/) for helping out with the setup of his work.
