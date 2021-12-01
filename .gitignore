@@ -1,0 +1,10 @@
+.vscode/
+datasets/*
+!datasets/.gitkeep
+results/*
+!results/.gitkeep
+**/__pycache__/
+*.egg-info/
+build/
+dist/
+**/.ipynb_checkpoints/
