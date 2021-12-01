@@ -473,6 +473,8 @@ For the reproduction of the above results for Kataria's method, we put the chang
     |---calculate_geodesic_consistency_scores.py        # interface for calculating match scores based on Yan's method
     |---calculate_missing_correspondences_scores.py     # interface for calculating match scores based on Cui's method
     |---extract_match_features.py                       # interface for extract and match features
+|---reliable_resectioning
+    |---src         # modified colmap source files for Kataria's method
 |---results
     |---${dataset_name}
         |---${feature_type}_${matching_type}_${geometric_verification_type}
