@@ -25,6 +25,9 @@ Based on our experiments, we have the following observations:
 
 ## Installation
 
+<details>
+<summary>[Click to expand]</summary>
+
 ```
 # python 3.7 is required for the 'capture_output' keyword in `subprocess.run`
 # which is only used in the notebooks
@@ -56,7 +59,12 @@ We also provide the datasets we use via [google drive](https://drive.google.com/
         |---...
 ```
 
+</details>
+
 ## Pipelines
+
+<details>
+<summary>[Click to expand]</summary>
 
 We provide two [jupyter notebooks](./notebooks/) as examples for the complete pipelines of Yan's method and Cui's method. These two methods share a similar pipeline by first computing a score for each image pair and then removing wrong matches based on the score. After that, the filtered matches are passed to the incremental reconstruction stage. In Yan's method, they use raw matches to compute tracks and use the percentage of shared unique tracks between two images as the score for an image pair. While in Cui's method, they do a local reconstruction for every image and use the [missing correspondence](http://www.cvg.ethz.ch/research/chzach/pdf/cvpr2008-preprint.pdf) idea to create a score for every image pair.
 
@@ -83,6 +91,7 @@ For learned features extracted by `hloc`, we use the exhaustive nearest neighbor
 
 Then, we use `colmap matches_importer` to perform geometric verification (compute two-view geometries from the matches) with different RANSAC parameters (check `colmap_matching_options` in [options/matching_options.py](./disambiguation/options/matching_options.py)).
 
+
 ### 2. Disambiguation
 
 Next, we can use Yan's method or Cui's method to compute the scores for all the matches. After that, we can choose to use a threshold filter, a top k filter, or a percentile filter to remove suspicious matches. We create a new database with the filtered matches and recompute two-view geometries.
@@ -93,7 +102,12 @@ We choose to pre-filter matches rather than post-process the reconstructed model
 
 Lastly, we use `colmap mapper` to reconstruct the whole scene incrementally. Depending on the dataset, you can choose to fix the intrinsics from EXIF or not (check [options/mapper_options.py](./disambiguation/options/mapper_options.py)).
 
-## Yan's Method
+</details>
+
+## Yan's Method Overview
+
+<details>
+<summary>[Click to expand]</summary>
 
 [Distinguishing the Indistinguishable: Exploring Structural Ambiguities via Geodesic Context](https://yanqingan.github.io/docs/cvpr17_distinguishing.pdf). CVPR 2017.
 
@@ -133,7 +147,12 @@ In our implementation, we expose another 4 parameters to tune:
 - `minimal_views`: the minimal number of shared tracks for a match to be valid. Increasing it means fewer matches will be valid.
 - `ds`: the data structure used to store the list of matches. You can leave it unchanged (default `largearray`) as the default value is a good tradeoff between speed and memory. For large datasets with thousands of images like `berliner_dom` (1618 images), it is necessary to use the `smallarray` data structure or limit the maximum number of keypoints in an image. In this case, it would be extremely slow (more than 8 hours for `berliner_dom`) due to a large number of images and the inefficient data structure.
 
-## Cui's Method
+</details>
+
+## Cui's Method Overview
+
+<details>
+<summary>[Click to expand]</summary>
 
 [Global Structure-from-Motion by Similarity Averaging](https://openaccess.thecvf.com/content_iccv_2015/papers/Cui_Global_Structure-From-Motion_by_ICCV_2015_paper.pdf). ICCV 2015.
 
@@ -187,7 +206,13 @@ This scoring method requires a smaller threshold since the score is typical arou
 - `parallel`: whether to use multiple threads for the computation of the scores. The statistics of the runtime is not accurate in parallel mode.
 - `plot`: whether to plot the masks and the image with projected 3D points. For large datasets, it is advisable not to plot as plotting will have a significant overhead.
 
+</details>
+
 ## Visualizations
+
+To avoid excessive loading time for the repo, please check [this](./visualizations.md) for visualizations.
+
+<!--
 
 ### Fine-tuned Parameters
 
@@ -196,14 +221,6 @@ Now we show some results of the implemented methods. The gif on the upper left d
 One thing worth noticing is that the parameters used for different datasets are different: we kind of cheat by tuning the parameters based on the pose graphs.
 
 #### Books
-
-<!--
-<p float="left">
-    <img src="visualizations/books_ori.gif" width="32%", alt="Books COLMAP">
-    <img src="visualizations/books_yan.gif" width="32%", alt="Books Yan's Method">
-    <img src="visualizations/books_cui.gif" width="32%", alt="Books Cui's Method">
-</p>
--->
 
 <p float="left">
     <img src="visualizations/books_dat.gif" width="49%", alt="Books Dataset">
@@ -216,13 +233,6 @@ One thing worth noticing is that the parameters used for different datasets are 
 
 #### Cereal
 
-<!--
-<p float="left">
-    <img src="visualizations/cereal_ori.gif" width="32%", alt="Cereal COLMAP">
-    <img src="visualizations/cereal_yan.gif" width="32%", alt="Cereal Yan's Method">
-    <img src="visualizations/cereal_cui.gif" width="32%", alt="Cereal Cui's Method">
-</p>
--->
 <p float="left">
     <img src="visualizations/cereal_dat.gif" width="49%", alt="Cereal Dataset">
     <img src="visualizations/cereal_ori.gif" width="49%", alt="Cereal COLMAP">
@@ -234,13 +244,6 @@ One thing worth noticing is that the parameters used for different datasets are 
 
 #### Cup
 
-<!--
-<p float="left">
-    <img src="visualizations/cup_ori.gif" width="32%", alt="Cup COLMAP">
-    <img src="visualizations/cup_yan.gif" width="32%", alt="Cup Yan's Method">
-    <img src="visualizations/cup_cui.gif" width="32%", alt="Cup Cui's Method">
-</p>
--->
 <p float="left">
     <img src="visualizations/cup_dat.gif" width="49%", alt="Cup Dataset">
     <img src="visualizations/cup_ori.gif" width="49%", alt="Cup COLMAP">
@@ -251,14 +254,6 @@ One thing worth noticing is that the parameters used for different datasets are 
 </p>
 
 #### Desk
-
-<!--
-<p float="left">
-    <img src="visualizations/desk_ori.gif" width="32%", alt="Desk COLMAP">
-    <img src="visualizations/desk_yan.gif" width="32%", alt="Desk Yan's Method">
-    <img src="visualizations/desk_cui.gif" width="32%", alt="Desk Cui's Method">
-</p>
--->
 
 <p float="left">
     <img src="visualizations/desk_dat.gif" width="49%", alt="Desk Dataset">
@@ -273,14 +268,6 @@ One thing worth noticing is that the parameters used for different datasets are 
 
 #### Oats
 
-<!--
-<p float="left">
-    <img src="visualizations/oats_ori.gif" width="32%", alt="Oats COLMAP">
-    <img src="visualizations/oats_yan.gif" width="32%", alt="Oats Yan's Method">
-    <img src="visualizations/oats_cui.gif" width="32%", alt="Oats Cui's Method">
-</p>
--->
-
 <p float="left">
     <img src="visualizations/oats_dat.gif" width="49%", alt="Oats Dataset">
     <img src="visualizations/oats_ori.gif" width="49%", alt="Oats COLMAP">
@@ -291,10 +278,6 @@ One thing worth noticing is that the parameters used for different datasets are 
 </p>
 
 (both methods failed as the ground truth should be something like a sequence instead of two sequences in parallel)
-
-<!--
-![Oats GT](visualizations/oats_gt.png)
--->
 
 #### Street
 
@@ -457,7 +440,12 @@ However, when we use these two sets of parameters on the large scale Internet da
 
 For the reproduction of the above results for Kataria's method, we put the changed/added files in the [reliable_resectioning](./reliable_resectioning/src) folder. You can merge all the files in this directory with colmap's source code and then compile it. We also provide a [bash script example](./scripts/reliable_resectioning_exhaustive_colmap.sh) for generating sparse reconstruction with the newly compiled colmap.
 
-## Codebase Walkthrough
+-->
+
+## Codebase Structure
+
+<details>
+<summary>[Click to expand]</summary>
 
 ```
 |---datasets
@@ -497,7 +485,12 @@ For the reproduction of the above results for Kataria's method, we put the chang
     |---match_features.py       # example of extracting and matching features
 ```
 
+</details>
+
 ## Datasets
+
+<details>
+<summary>[Click to expand]</summary>
 
 We mainly use the datasets from [Yan's repo](https://github.com/yanqingan/SfM_Disambiguation) and [Heinly's website](https://www.cs.unc.edu/~jheinly/duplicate_structure.html), where they include some datasets from [Roberts et al.](https://snsinha.github.io/pdfs/RobertsCVPR2011.pdf) and [Jiang et al.](http://www.cs.sfu.ca/~pingtan/Papers/cvpr12_sfm.pdf). We packed the cleaned-up version of these datasets (with images renamed and features removed) into a [zip file](https://drive.google.com/file/d/1y6qB16R8kiyMfUjCHI5rFnZU_fRacQcc/view?usp=sharing) for downloads.
 
@@ -514,7 +507,12 @@ To experiment with other datasets, you can place new datasets under `yan2017` or
 
 then you can use your `${your_dataset_name}` as argument `dataset_name` to run the code on new datasets.
 
+</details>
+
 ## Literature Review
+
+<details>
+<summary>[Click to expand]</summary>
 
 Here are some relevant papers and their summaries:
 
@@ -546,6 +544,8 @@ Here are some relevant papers and their summaries:
   - [[Heinly ECCV 2014](https://www.cs.unc.edu/~jheinly/publications/eccv2014-heinly.pdf)]: generate proposals for cuts into subgraphs
   - [[Shen ECCV 2016](https://www.researchgate.net/publication/308278729_Graph-Based_Consistent_Matching_for_Structure-from-Motion)]: start from MST to form the full pose graph (bottom-up)
   - [[Wang BMVC 2018](http://www.bmva.org/bmvc/2018/contents/papers/0718.pdf)]: cut MST into groups for clustering
+
+</details>
 
 ## Acknowledgement
 
