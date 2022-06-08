@@ -14,7 +14,7 @@ from .options.matching_options import hloc_matching_confs
 def main(feature_type, matching_type, geometric_verification_type,
          dataset_path, results_path, colmap_path, db_path, use_gpu, log_path):
     assert feature_type in [
-        'sift_default', 'sift_strict', 'superpoint', 'r2d2', 'd2net', 'disk'
+        'sift_default', 'sift_sparse', 'superpoint', 'r2d2', 'd2net', 'disk'
     ]
     assert matching_type in ['sift_default', 'sift_strict', 'nn', 'superglue']
     assert geometric_verification_type in ['strict', 'default']
