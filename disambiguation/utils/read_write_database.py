@@ -103,8 +103,8 @@ def write_matches_into_db(db_path, match_path, match_list_path):
     for name0, name1 in pairs:
         image_id0 = image_name_to_id[name0]
         image_id1 = image_name_to_id[name1]
-        pair_name = names_to_pair(name0, name1)
-        matches = match_file[pair_name]['matches0'][()]
+        # pair_name = names_to_pair(name0, name1)
+        matches = match_file[name0][name1]['matches0'][()]
         valid = matches > -1
         matches = np.stack([np.where(valid)[0], matches[valid]], -1)
         db.add_matches(image_id0, image_id1, matches)
