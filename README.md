@@ -46,7 +46,7 @@ conda install -c conda-forge jupyterlab ipywidgets -y
 conda install -c open3d-admin -c conda-forge open3d -y
 
 # install this library in development mode for further modifications
-python install -e .
+python -m pip install -e .
 ```
 
 We also provide the datasets we use via [google drive](https://drive.google.com/file/d/1y6qB16R8kiyMfUjCHI5rFnZU_fRacQcc/view?usp=sharing). Please download it and then unzip it under the folder `datasets` to have the following layout:
